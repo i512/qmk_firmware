@@ -74,6 +74,16 @@ if [ "$RUNTIME" = "docker" ]; then
 fi
 
 # Run container and build firmware
+echo "$RUNTIME" run --rm -it $usb_args \
+	$uid_arg \
+	-w /qmk_firmware \
+	-v "$dir":/qmk_firmware \
+	-e ALT_GET_KEYBOARDS=true \
+	-e SKIP_GIT="$SKIP_GIT" \
+	-e MAKEFLAGS="$MAKEFLAGS" \
+	qmkfm/qmk_cli \
+	make "$keyboard${keymap:+:$keymap}${target:+:$target}"
+
 "$RUNTIME" run --rm -it $usb_args \
 	$uid_arg \
 	-w /qmk_firmware \
